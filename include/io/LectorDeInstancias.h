@@ -16,15 +16,15 @@
 #include <vector>
 
 // Clase que obtiene los nombres de los ficheros de entrada dada una ruta
-class GestorArchivos {
+class LectorDeInstancias {
  public:
-  GestorArchivos(std::string ruta_directorio, std::string fichero_salida);
+  LectorDeInstancias(std::string ruta_directorio, std::string fichero_salida);
   void EscribirTabla(/*CalcularTSP resultado*/);
   void LeerNombresFicherosEntrada();
   std::vector<std::string> GetFicherosEntrada() const { return ficheros_entrada_; }
 
 
-  ~GestorArchivos() = default;
+  ~LectorDeInstancias() = default;
  private:
   std::vector<std::string> ficheros_entrada_;
   std::string fichero_salida_;

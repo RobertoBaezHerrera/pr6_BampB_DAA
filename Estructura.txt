@@ -1,0 +1,23 @@
+Pasos:
+ 1. Coger info de instancias
+
+
+Estructura:
+ - GestorDeArchivos: para leer los archivos de entrada del directorio correspondiente.
+ - Clase DatosMDP: incluye S, CalcularDistancia, y datos del problema.
+ - Clase Voraz, BusquedaLocal y GRASP para los diferentes algoritmos.
+ - Clase ResolverMDP para resolver segun el algoritmo y guardar las soluciones
+ - Clase Tabla padre, con TablasHijas para las diferentes tablas.
+
+├── Main
+├── io
+│   └── LectorDeInstancias
+├── modelo
+│   ├── DatosMDP
+    |── ResolverMDP
+├── algoritmo
+│   ├── Voraz
+│   ├── BusquedaLocal
+│   └── GRASP
+├── resultados
+│   ├── TablaResultados
