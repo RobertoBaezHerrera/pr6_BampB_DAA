@@ -57,6 +57,8 @@ void EjecutarInstancia(const std::string& fichero) {
   DatosMDP datos(fichero);
   AlgoritmoVoraz voraz(datos);
   std::vector<std::vector<double>> S = voraz.EjecutarVoraz(3);
+  double z = voraz.CalcularZ(S);
+  std::cout << "Z: " << z << std::endl;
 
   // Crear objeto AlgoritmoVoraz
   /* AlgoritmoVoraz algoritmo_voraz(datos);
