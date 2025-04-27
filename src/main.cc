@@ -67,8 +67,9 @@ void ImprimirTablas(ResolverMDP resolver, std::string fichero_salida) {
 void EjecutarInstancia(const std::string& fichero_entrada, std::string fichero_salida) {
   // Crear objeto DatosMDP
   DatosMDP datos(fichero_entrada);
+  datos.SetM(3);
   ResolverMDP resolver(datos);
-  resolver.ResolverVoraz(3);
+  resolver.ResolverVoraz();
   SolucionMDP* s = resolver.GetSolucionVoraz();
   std::cout << "Conjunto S: " << std::endl;
   for (const auto& elem : s->GetS()) {

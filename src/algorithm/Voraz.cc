@@ -46,13 +46,13 @@ int AlgoritmoVoraz::CalcularElementoMasAlejado(const std::vector<std::vector<dou
   return id_max_distancia;
 }
 
-std::vector<std::vector<double>> AlgoritmoVoraz::EjecutarVoraz(int m) {
+std::vector<std::vector<double>> AlgoritmoVoraz::EjecutarVoraz() {
   std::vector<std::vector<double>> S = datos_.GetConjuntoS();
   std::vector<std::vector<double>> elem = S;
   S.clear();
   // Sc es el centro de gravedad inicial
   std::vector<double> centro_gravedad = CalcularCentroGravedad(elem);
-  while (S.size() < m) {
+  while (S.size() < datos_.GetM()) {
     // Calculamos el indice del elemento mas alejado del centro de gravedad
     int id_max_distancia = CalcularElementoMasAlejado(elem, centro_gravedad);
     // El elemento mas alejado del centro de gravedad es el que se añade al conjunto

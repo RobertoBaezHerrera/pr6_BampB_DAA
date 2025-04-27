@@ -21,7 +21,7 @@ class ResolverMDP {
   ResolverMDP(const DatosMDP& datos);
 
   // Método para resolver el problema MDP
-  void ResolverVoraz(int m);
+  void ResolverVoraz();
 
   // Getters
   SolucionMDP* GetSolucionVoraz() const { return solucion_voraz_; }
