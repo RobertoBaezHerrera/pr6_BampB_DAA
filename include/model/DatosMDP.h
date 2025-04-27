@@ -25,6 +25,7 @@ class DatosMDP {
   std::vector<std::vector<double>> GetConjuntoS() const;
   int GetM() const;
   int GetTamanoConjuntoS() const;
+  std::string GetFicheroEntrada() const;
 
   // Setters
   void SetM(int m);
@@ -37,4 +38,5 @@ class DatosMDP {
   int dimension_K_;
   std::vector<std::vector<double>> conjunto_S_;
   int m_ = 0;
+  std::string fichero_entrada_;
 };

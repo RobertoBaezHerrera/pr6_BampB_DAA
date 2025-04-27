@@ -18,13 +18,7 @@ std::vector<double> AlgoritmoVoraz::CalcularCentroGravedad(const std::vector<std
   for (int j = 0; j < dimension_K; ++j) {
     centro_gravedad[j] /= elem.size();
   }
-  // Mostrar el centro de gravedad
-    std::cout << "Centro de gravedad: ";
-    for (const auto& valor : centro_gravedad) {
-        std::cout << valor << " ";
-    }
-    std::cout << std::endl;
-    return centro_gravedad;
+  return centro_gravedad;
 }
 
 double AlgoritmoVoraz::CalcularDistancia(const std::vector<double>& Si, const std::vector<double>& centro_gravedad) const {
@@ -67,15 +61,6 @@ std::vector<std::vector<double>> AlgoritmoVoraz::EjecutarVoraz(int m) {
     // Actualizar el centro de gravedad
     centro_gravedad = CalcularCentroGravedad(S);
   }
-  // Imprimir el conjunto S
-    std::cout << "\033[1;33mConjunto S: \033[0m\n";
-    for (const auto& elemento : S) {
-        for (const auto& valor : elemento) {
-            std::cout << valor << " ";
-        }
-        std::cout << std::endl;
-    }
-  // Imprimir el conjunto de elementos restantes
   return S;
 }
 

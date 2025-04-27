@@ -16,6 +16,7 @@
 #include "../include/model/DatosMDP.h"
 #include "../include/algorithm/Voraz.h"
 #include "../include/model/ResolverMDP.h"
+#include "../include/results/Tabla.h"
 
 // Texto de ayuda
 const std::string kTextoAyuda =
@@ -52,12 +53,34 @@ void Usage(int argc, char* argv[]) {
   }
 }
 
+void ImprimirTablas(ResolverMDP resolver, std::string fichero_salida) {
+  // Crear objeto TablaVoraz
+  TablaVoraz tabla_voraz(fichero_salida);
+  // Imprimir cabecera
+  tabla_voraz.ImprimirCabecera();
+  // Imprimir resultados
+  tabla_voraz.ImprimirResultados(resolver.GetSolucionVoraz());
+
+}
+
 // Ejecuta la instancia
-void EjecutarInstancia(const std::string& fichero) {
+void EjecutarInstancia(const std::string& fichero_entrada, std::string fichero_salida) {
   // Crear objeto DatosMDP
-  DatosMDP datos(fichero);
+  DatosMDP datos(fichero_entrada);
   ResolverMDP resolver(datos);
   resolver.ResolverVoraz(3);
+  SolucionMDP* s = resolver.GetSolucionVoraz();
+  std::cout << "Conjunto S: " << std::endl;
+  for (const auto& elem : s->GetS()) {
+    std::cout << "[ ";
+    for (const auto& val : elem) {
+      std::cout << val << " ";
+    }
+    std::cout << "]" << std::endl;
+  }
+  std::cout << "----------------------------------------" << std::endl;
+
+  ImprimirTablas(resolver, fichero_salida);
 
 
 
@@ -79,9 +102,9 @@ void LeerFicheros(int argc, char* argv[]) {
   gestor.LeerNombresFicherosEntrada();
   int num_ficheros = gestor.GetFicherosEntrada().size();
   // TablaVoraz tabla_voraz("Cuadro 1: Algoritmo Voraz. Tabla de resultados");
-  for (auto& fichero : gestor.GetFicherosEntrada()) {
-    std::cout << "Ejecutando el fichero: " << fichero << std::endl;
-    EjecutarInstancia(fichero);
+  for (auto& fichero_entrada : gestor.GetFicherosEntrada()) {
+    std::cout << "Ejecutando el fichero: " << fichero_entrada << std::endl;
+    EjecutarInstancia(fichero_entrada, fichero_salida);
     break;
   }
   std::cout << "Numero de ficheros definidos: " << num_ficheros << std::endl;

@@ -14,14 +14,19 @@
 
 #include "../model/DatosMDP.h"
 #include "../algorithm/Voraz.h"
+#include "../results/SolucionMDP.h"
 
 class ResolverMDP {
  public:
-  ResolverMDP(const DatosMDP& datos) : datos_(datos) { };
+  ResolverMDP(const DatosMDP& datos);
 
   // Método para resolver el problema MDP
   void ResolverVoraz(int m);
 
+  // Getters
+  SolucionMDP* GetSolucionVoraz() const { return solucion_voraz_; }
+
  private:
   DatosMDP datos_;
+  SolucionMDP* solucion_voraz_;
 };

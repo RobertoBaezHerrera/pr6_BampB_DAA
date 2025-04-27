@@ -15,6 +15,7 @@
 
 DatosMDP::DatosMDP(const std::string& fichero_entrada) {
   std::ifstream fichero(fichero_entrada);
+  fichero_entrada_ = fichero_entrada;
   if (!fichero.is_open()) {
     std::cerr << "Error: No se puede abrir el fichero " << fichero_entrada << std::endl;
     exit(EXIT_FAILURE);
@@ -55,6 +56,10 @@ int DatosMDP::GetTamanoConjuntoS() const {
 
 void DatosMDP::AnadirElementoAConjuntoS(const std::vector<double>& elemento) {
   conjunto_S_.push_back(elemento);
+}
+
+std::string DatosMDP::GetFicheroEntrada() const {
+  return fichero_entrada_;
 }
 
 
