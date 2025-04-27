@@ -15,6 +15,7 @@
 #include "../include/io/LectorDeInstancias.h"
 #include "../include/model/DatosMDP.h"
 #include "../include/algorithm/Voraz.h"
+#include "../include/model/ResolverMDP.h"
 
 // Texto de ayuda
 const std::string kTextoAyuda =
@@ -55,10 +56,10 @@ void Usage(int argc, char* argv[]) {
 void EjecutarInstancia(const std::string& fichero) {
   // Crear objeto DatosMDP
   DatosMDP datos(fichero);
-  AlgoritmoVoraz voraz(datos);
-  std::vector<std::vector<double>> S = voraz.EjecutarVoraz(3);
-  double z = voraz.CalcularZ(S);
-  std::cout << "Z: " << z << std::endl;
+  ResolverMDP resolver(datos);
+  resolver.ResolverVoraz(3);
+
+
 
   // Crear objeto AlgoritmoVoraz
   /* AlgoritmoVoraz algoritmo_voraz(datos);
@@ -79,6 +80,7 @@ void LeerFicheros(int argc, char* argv[]) {
   int num_ficheros = gestor.GetFicherosEntrada().size();
   // TablaVoraz tabla_voraz("Cuadro 1: Algoritmo Voraz. Tabla de resultados");
   for (auto& fichero : gestor.GetFicherosEntrada()) {
+    std::cout << "Ejecutando el fichero: " << fichero << std::endl;
     EjecutarInstancia(fichero);
     break;
   }
