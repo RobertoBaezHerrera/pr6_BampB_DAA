@@ -12,17 +12,20 @@
 
 #include "../model/DatosMDP.h"
 
+#include <iostream>
+#include <vector>
+#include <utility>
+#include <cmath>
+
 class AlgoritmoVoraz {
  public:
   AlgoritmoVoraz(const DatosMDP& datos);
-  void Ejecutar();
-  void ImprimirResultados() const;
+  std::vector<std::vector<double>> EjecutarVoraz(int m);
+  //void ImprimirResultados() const;
+  std::vector<double> CalcularCentroGravedad(const std::vector<std::vector<double>>& elem);
+  double CalcularDistancia(const std::vector<double>& Si, const std::vector<double>& centro_gravedad) const;
+  int CalcularElementoMasAlejado(const std::vector<std::vector<double>>& elem, const std::vector<double>& centro_gravedad) const;
 
  private:
-  double CalcularDiversidad(const std::vector<int>& solucion) const;
-  void ImprimirSolucion(const std::vector<int>& solucion) const;
-
   DatosMDP datos_;
-  std::vector<int> mejor_solucion_;
-  double mejor_diversidad_ = -1.0;
 };

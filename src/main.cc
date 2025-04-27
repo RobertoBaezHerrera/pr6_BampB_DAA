@@ -14,6 +14,7 @@
 
 #include "../include/io/LectorDeInstancias.h"
 #include "../include/model/DatosMDP.h"
+#include "../include/algorithm/Voraz.h"
 
 // Texto de ayuda
 const std::string kTextoAyuda =
@@ -54,6 +55,9 @@ void Usage(int argc, char* argv[]) {
 void EjecutarInstancia(const std::string& fichero) {
   // Crear objeto DatosMDP
   DatosMDP datos(fichero);
+  AlgoritmoVoraz voraz(datos);
+  std::vector<std::vector<double>> S = voraz.EjecutarVoraz(3);
+
   // Crear objeto AlgoritmoVoraz
   /* AlgoritmoVoraz algoritmo_voraz(datos);
   // Ejecutar el algoritmo voraz

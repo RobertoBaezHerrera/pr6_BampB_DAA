@@ -48,3 +48,23 @@ int DatosMDP::GetDimensionK() const {
 int DatosMDP::GetM() const {
   return m_;
 }
+
+int DatosMDP::GetTamanoConjuntoS() const {
+  return conjunto_S_.size();
+}
+
+void DatosMDP::AnadirElementoAConjuntoS(const std::vector<double>& elemento) {
+  conjunto_S_.push_back(elemento);
+}
+
+
+
+
+void DatosMDP::SetM(int m) {
+  m_ = m;
+}
+
+void DatosMDP::VaciarConjuntoS() {
+  conjunto_S_.clear();
+  conjunto_S_.resize(num_elementos_n_);
+}

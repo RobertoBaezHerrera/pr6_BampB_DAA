@@ -20,10 +20,17 @@ class DatosMDP {
   DatosMDP(const std::string& fichero_entrada);
 
   // Getters
-  int GetNumElementosN() const { return num_elementos_n_; }
-  int GetDimensionK() const { return dimension_K_; }
+  int GetNumElementosN() const;
+  int GetDimensionK() const;
   std::vector<std::vector<double>> GetConjuntoS() const;
   int GetM() const;
+  int GetTamanoConjuntoS() const;
+
+  // Setters
+  void SetM(int m);
+  void VaciarConjuntoS();
+
+  void AnadirElementoAConjuntoS(const std::vector<double>& elemento);
 
  private:
   int num_elementos_n_;
