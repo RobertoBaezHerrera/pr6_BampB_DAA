@@ -25,6 +25,7 @@ class AlgoritmoVoraz {
   std::vector<double> CalcularCentroGravedad(const std::vector<std::vector<double>>& elem);
   double CalcularDistancia(const std::vector<double>& Si, const std::vector<double>& centro_gravedad) const;
   int CalcularElementoMasAlejado(const std::vector<std::vector<double>>& elem, const std::vector<double>& centro_gravedad) const;
+  double CalcularZ(const std::vector<std::vector<double>>& S) const;
 
  private:
   DatosMDP datos_;

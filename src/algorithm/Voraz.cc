@@ -78,3 +78,13 @@ std::vector<std::vector<double>> AlgoritmoVoraz::EjecutarVoraz(int m) {
   // Imprimir el conjunto de elementos restantes
   return S;
 }
+
+double AlgoritmoVoraz::CalcularZ(const std::vector<std::vector<double>>& S) const {
+  double z = 0.0;
+  for (int i = 0; i < S.size(); ++i) {
+    for (int j = i + 1; j < S.size(); ++j) {
+      z += CalcularDistancia(S[i], S[j]);
+    }
+  }
+  return z;
+}
