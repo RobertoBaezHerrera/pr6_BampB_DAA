@@ -19,6 +19,8 @@
 #include "../include/results/Tabla.h"
 #include "../include/algorithm/GRASP.h"
 
+bool primera_ejecucion = true;
+
 // Texto de ayuda
 const std::string kTextoAyuda =
     "Uso: pr6_VRPT <ruta_directorio> <fichero_salida.txt>\n\n"
@@ -55,29 +57,28 @@ void Usage(int argc, char* argv[]) {
 }
 
 void ImprimirTablas(ResolverMDP resolver, std::string fichero_salida) {
-  // Crear objeto TablaVoraz
-  Tabla* tabla = new TablaVoraz(fichero_salida, true);
-  // Imprimir cabecera
+  // Imprimir TablaVoraz
+  Tabla* tabla = new TablaVoraz(fichero_salida, primera_ejecucion);
   tabla->ImprimirCabecera();
-  // Imprimir resultados
   tabla->ImprimirResultados(resolver.GetSolucionVoraz());
 
-  // Crear objeto TablaGRASP
+  // Imprimir TablaGRASP
   tabla = new TablaGRASP(fichero_salida, false);
-  // Imprimir cabecera
   tabla->ImprimirCabecera();
-  // Imprimir resultados
   tabla->ImprimirResultados(resolver.GetSolucionGRASP());
-
 }
 
-// Ejecuta la instancia
-void EjecutarInstancia(const std::string& fichero_entrada, std::string fichero_salida) {
-  // Crear objeto DatosMDP
-  DatosMDP datos(fichero_entrada);
-  datos.SetM(3);
-  ResolverMDP resolver(datos);
-  resolver.ResolverVoraz();
+void EjecutarVoraz(const std::string& fichero_entrada, Tabla* tabla) {
+  for (int m = 2; m <= 5; ++m) {
+    // Crear objeto DatosMDP
+    DatosMDP datos(fichero_entrada);
+    datos.SetM(m);
+    ResolverMDP resolver(datos);
+    resolver.ResolverVoraz();
+    tabla->ImprimirResultados(resolver.GetSolucionVoraz());
+  }
+  tabla->ImprimirLineaSeparadora();
+  /* // Impresion de S por voraz
   SolucionMDP* s = resolver.GetSolucionVoraz();
   std::cout << "Conjunto S: " << std::endl;
   for (const auto& elem : s->GetS()) {
@@ -88,38 +89,45 @@ void EjecutarInstancia(const std::string& fichero_entrada, std::string fichero_s
     std::cout << "]" << std::endl;
   }
   std::cout << "Z: " << s->GetZ() << std::endl;
-  std::cout << "----------------------------------------" << std::endl;
+  std::cout << "----------------------------------------" << std::endl; */
+}
 
-  // GRASP
-  resolver.ResolverGRASP(1, 1);
-  SolucionMDP* s_grasp = resolver.GetSolucionGRASP();
-  std::cout << "Conjunto S GRASP: " << std::endl;
-  for (const auto& elem : s_grasp->GetS()) {
-    std::cout << "[ ";
-    for (const auto& val : elem) {
-      std::cout << val << " ";
+void EjecutarGRASP(const std::string& fichero_entrada, Tabla* tabla) {
+  for (int m = 2; m <= 5; ++m) {
+    for (int iter = 1; iter <= 2; ++iter) {
+      for (int LRC = 2; LRC <= 3; ++LRC) {
+        // Crear objeto DatosMDP
+        DatosMDP datos(fichero_entrada);
+        datos.SetM(m);
+        ResolverMDP resolver(datos);
+        int iteraciones = 10;
+        resolver.ResolverGRASP(LRC, iteraciones * iter);
+        tabla->ImprimirResultados(resolver.GetSolucionGRASP());
+      }
     }
-    std::cout << "]" << std::endl;
   }
-  std::cout << "Z: " << s_grasp->GetZ() << std::endl;
-  std::cout << "----------------------------------------" << std::endl;
-
-  ImprimirTablas(resolver, fichero_salida);
-
+  tabla->ImprimirLineaSeparadora();
 }
 
 // Lee los ficheros de entrada y ejecuta los algoritmos
-void LeerFicheros(int argc, char* argv[]) {
+void LeerFicheros(int argc, char* argv[], int opcion) {
   std::string ruta_directorio{argv[1]};
   std::string fichero_salida{argv[2]};
   LectorDeInstancias gestor{ruta_directorio, fichero_salida};
   gestor.LeerNombresFicherosEntrada();
   int num_ficheros = gestor.GetFicherosEntrada().size();
-  // TablaVoraz tabla_voraz("Cuadro 1: Algoritmo Voraz. Tabla de resultados");
+  Tabla* tabla = new TablaVoraz(fichero_salida);
+  if (opcion == 2) {
+    tabla = new TablaGRASP(fichero_salida);
+  }
+  tabla->ImprimirCabecera();
   for (auto& fichero_entrada : gestor.GetFicherosEntrada()) {
-    std::cout << "Ejecutando el fichero: " << fichero_entrada << std::endl;
-    EjecutarInstancia(fichero_entrada, fichero_salida);
-    break;
+    std::cout << "\033[1;33mEjecutando el fichero: " << fichero_entrada << "\033[0m" << std::endl;
+    if (opcion == 1) {
+      EjecutarVoraz(fichero_entrada, tabla);
+    } else if (opcion == 2) {
+      EjecutarGRASP(fichero_entrada, tabla);
+    }
   }
   std::cout << "Numero de ficheros definidos: " << num_ficheros << std::endl;
   return;
@@ -128,7 +136,8 @@ void LeerFicheros(int argc, char* argv[]) {
 int MenuOpciones() {
   int opcion = 0;
   std::cout << "Seleccione una opción: " << std::endl;
-  std::cout << "1. Leer ficheros de entrada" << std::endl;
+  std::cout << "1. Resolver mediante VORAZ" << std::endl;
+  std::cout << "2. Resolver mediante GRASP" << std::endl;
   std::cout << "0. Salir" << std::endl;
   std::cin >> opcion;
   return opcion;
@@ -139,7 +148,8 @@ void EjecutarPrograma(int opcion, int argc, char* argv[]) {
     case 0:
       std::cout << "Saliendo del programa...." << std::endl;
     case 1:
-      LeerFicheros(argc, argv);
+    case 2:
+      LeerFicheros(argc, argv, opcion);
       break;
     default:
       std::cout << argv[0] << ": Error: Opción '" << argv[3]

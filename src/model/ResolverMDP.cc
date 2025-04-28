@@ -3,7 +3,7 @@
 ResolverMDP::ResolverMDP(const DatosMDP& datos) : datos_(datos) { }
 
 void ResolverMDP::ResolverVoraz() {
-  std::cout << "\033[33mResolviendo el problema MDP...\033[0m" << std::endl;
+  std::cout << "\033[35mResolviendo con Voraz...\033[0m" << std::endl;
   AlgoritmoVoraz voraz(datos_);
   std::vector<std::vector<double>> S = voraz.EjecutarVoraz();
   double z = voraz.CalcularZ(S);
@@ -11,7 +11,7 @@ void ResolverMDP::ResolverVoraz() {
 }
 
 void ResolverMDP::ResolverGRASP(int LRC, int iteraciones) {
-  std::cout << "\033[33mResolviendo el problema MDP con GRASP...\033[0m" << std::endl;
+  //std::cout << "\033[33mResolviendo el problema MDP con GRASP...\033[0m" << std::endl;
   AlgoritmoGRASP grasp(datos_);
   std::vector<std::vector<double>> S = grasp.EjecutarGRASP(LRC, iteraciones);
   double z = grasp.CalcularZ(S);

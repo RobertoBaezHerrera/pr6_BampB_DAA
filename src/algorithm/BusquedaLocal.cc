@@ -21,6 +21,7 @@ std::vector<std::vector<double>> BusquedaLocal::CalcularElementosFueraDeS(const 
   return elem;
 }
 
+// Aqui solo podrá mejorar un elemento de la solucion
 std::vector<std::vector<double>> BusquedaLocal::BLSwap(const std::vector<std::vector<double>>& S) {
   std::vector<std::vector<double>> elem = CalcularElementosFueraDeS(S);
   double z = CalcularZ(S);
@@ -46,6 +47,7 @@ std::vector<std::vector<double>> BusquedaLocal::BLSwap(const std::vector<std::ve
   return S_mejor;
 }
 
+// Aqui podra mejorar varios elementos de la solucion, pero actualizara con la primera mejora posible smp
 std::vector<std::vector<double>> BusquedaLocal::BLSwapIterativoFirstImprovement(const std::vector<std::vector<double>>& S) {
   std::vector<std::vector<double>> elem = CalcularElementosFueraDeS(S);
   double z_actual = CalcularZ(S);
@@ -75,6 +77,7 @@ std::vector<std::vector<double>> BusquedaLocal::BLSwapIterativoFirstImprovement(
   return S_actual;
 }
 
+// Aqui podra mejorar varios elementos de la solucion, y actualiza con la mejor mejora global
 std::vector<std::vector<double>> BusquedaLocal::BLSwapIterativoBestImprovement(const std::vector<std::vector<double>>& S) {
   std::vector<std::vector<double>> elem = CalcularElementosFueraDeS(S);
   double z_actual = CalcularZ(S);

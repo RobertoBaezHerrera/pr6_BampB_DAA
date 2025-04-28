@@ -23,6 +23,7 @@ class Tabla {
   Tabla(const std::string& fichero_salida, bool primera_vez);
   virtual void ImprimirCabecera() = 0;
   virtual void ImprimirResultados(SolucionMDP* s) = 0;
+  void ImprimirLineaSeparadora();
 
  protected:
   std::ofstream fichero_salida_;
@@ -37,7 +38,7 @@ class TablaVoraz : public Tabla {
 
 class TablaGRASP : public Tabla {
  public:
-  TablaGRASP(const std::string& fichero_salida, bool primera_vez = false);
+  TablaGRASP(const std::string& fichero_salida, bool primera_vez = true);
   void ImprimirCabecera() override;
   void ImprimirResultados(SolucionMDP* s) override;
 };

@@ -57,7 +57,7 @@ std::vector<std::vector<double>> AlgoritmoGRASP::EjecutarVorazAleatorio(int LRC)
 }
 
 std::vector<std::vector<double>> AlgoritmoGRASP::EjecutarGRASP(int LRC, int iteraciones) {
-  std::cout << "\033[33mResolviendo con GRASP...\033[0m" << std::endl;
+  std::cout << "\033[35mResolviendo con GRASP...\033[0m" << std::endl;
   std::vector<std::vector<double>> S = EjecutarVorazAleatorio(LRC);
   double z = CalcularZ(S);
   double z_mejor = z;

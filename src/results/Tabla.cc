@@ -15,6 +15,10 @@ Tabla::Tabla(const std::string& fichero_salida, bool primera_vez) {
   }
 }
 
+void Tabla::ImprimirLineaSeparadora() {
+    fichero_salida_ << "_________________________________________________________________________________________________" << std::endl;
+}
+
 TablaVoraz::TablaVoraz(const std::string& fichero_salida, bool primera_vez) : Tabla(fichero_salida, primera_vez) { }
 
 void TablaVoraz::ImprimirCabecera() {
