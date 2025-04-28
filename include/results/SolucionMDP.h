@@ -46,3 +46,17 @@ class SolucionVoraz : public SolucionMDP {
                 const std::string& fichero_entrada, int n, int k, int m) 
                 : SolucionMDP(S, z, cpu, fichero_entrada, n, m, k) { }
 };
+
+class SolucionGRASP : public SolucionMDP {
+ public:
+  SolucionGRASP() = default;
+  SolucionGRASP(const std::vector<std::vector<double>>& S, double z, double cpu,
+                const std::string& fichero_entrada, int n, int k, int m, int iteraciones, int LRC);
+
+  // Getters
+  int GetIteraciones() const { return iteraciones_; }
+  int GetLRC() const { return LRC_; }
+ private:
+  int iteraciones_;
+  int LRC_;
+};

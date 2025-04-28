@@ -3,7 +3,7 @@
 AlgoritmoGRASP::AlgoritmoGRASP(const DatosMDP& datos) : AlgoritmoVoraz(datos) { }
 
 std::vector<int> AlgoritmoGRASP::CalcularElementosMasAlejados(const std::vector<std::vector<double>>& elem,
-    const std::vector<double>& centro_gravedad, int LRC) const {
+  const std::vector<double>& centro_gravedad, int LRC) const {
   std::vector<std::pair<double, int>> distancias_indices;
 
   if (elem.empty()) {
@@ -12,15 +12,14 @@ std::vector<int> AlgoritmoGRASP::CalcularElementosMasAlejados(const std::vector<
   }
 
   if (LRC > elem.size()) {
-    std::cerr << "Error: LRC no puede ser mayor que el número de elementos."
-              << std::endl;
+    std::cerr << "Error: LRC no puede ser mayor que el número de elementos."  << std::endl;
     return {};
   }
 
   // Calcular todas las distancias al centro de gravedad y guardar índice
   for (std::size_t i = 0; i < elem.size(); ++i) {
     double distancia_actual = CalcularDistancia(elem[i], centro_gravedad);
-    distancias_indices.push_back({distancia_actual, static_cast<int>(i)});
+    distancias_indices.push_back({distancia_actual, i});
   }
 
   // Ordenar de mayor a menor distancia
@@ -45,6 +44,7 @@ std::vector<std::vector<double>> AlgoritmoGRASP::EjecutarVorazAleatorio(int LRC)
   while (S.size() < datos_.GetM()) {
     // Calculamos el indice del elemento mas alejado del centro de gravedad
     std::vector<int> indices_max_distancia = CalcularElementosMasAlejados(elem, centro_gravedad, LRC);
+    // Esto es lo que cambia en el algoritmo GRASP
     int id_aleatorio = rand() % indices_max_distancia.size();
     int id_max_distancia = indices_max_distancia[id_aleatorio];
     // El elemento mas alejado del centro de gravedad es el que se añade al conjunto

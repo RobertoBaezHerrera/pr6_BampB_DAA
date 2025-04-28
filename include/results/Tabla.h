@@ -20,7 +20,7 @@
 
 class Tabla {
  public:
-  Tabla(const std::string& fichero_salida);
+  Tabla(const std::string& fichero_salida, bool primera_vez);
   virtual void ImprimirCabecera() = 0;
   virtual void ImprimirResultados(SolucionMDP* s) = 0;
 
@@ -30,7 +30,14 @@ class Tabla {
 
 class TablaVoraz : public Tabla {
  public:
-  TablaVoraz(const std::string& fichero_salida);
+  TablaVoraz(const std::string& fichero_salida, bool primera_vez = true);
+  void ImprimirCabecera() override;
+  void ImprimirResultados(SolucionMDP* s) override;
+};
+
+class TablaGRASP : public Tabla {
+ public:
+  TablaGRASP(const std::string& fichero_salida, bool primera_vez = false);
   void ImprimirCabecera() override;
   void ImprimirResultados(SolucionMDP* s) override;
 };

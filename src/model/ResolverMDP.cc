@@ -9,3 +9,11 @@ void ResolverMDP::ResolverVoraz() {
   double z = voraz.CalcularZ(S);
   solucion_voraz_ = new SolucionVoraz(S, z, 0.0, datos_.GetFicheroEntrada(), datos_.GetNumElementosN(), datos_.GetM(), datos_.GetDimensionK());
 }
+
+void ResolverMDP::ResolverGRASP(int LRC, int iteraciones) {
+  std::cout << "\033[33mResolviendo el problema MDP con GRASP...\033[0m" << std::endl;
+  AlgoritmoGRASP grasp(datos_);
+  std::vector<std::vector<double>> S = grasp.EjecutarGRASP(LRC, iteraciones);
+  double z = grasp.CalcularZ(S);
+  solucion_grasp_ = new SolucionGRASP(S, z, 0.0, datos_.GetFicheroEntrada(), datos_.GetNumElementosN(), datos_.GetDimensionK(), datos_.GetM(), iteraciones, LRC);
+}

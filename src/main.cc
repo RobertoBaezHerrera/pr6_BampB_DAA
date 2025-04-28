@@ -17,6 +17,7 @@
 #include "../include/algorithm/Voraz.h"
 #include "../include/model/ResolverMDP.h"
 #include "../include/results/Tabla.h"
+#include "../include/algorithm/GRASP.h"
 
 // Texto de ayuda
 const std::string kTextoAyuda =
@@ -55,11 +56,18 @@ void Usage(int argc, char* argv[]) {
 
 void ImprimirTablas(ResolverMDP resolver, std::string fichero_salida) {
   // Crear objeto TablaVoraz
-  TablaVoraz tabla_voraz(fichero_salida);
+  Tabla* tabla = new TablaVoraz(fichero_salida, true);
   // Imprimir cabecera
-  tabla_voraz.ImprimirCabecera();
+  tabla->ImprimirCabecera();
   // Imprimir resultados
-  tabla_voraz.ImprimirResultados(resolver.GetSolucionVoraz());
+  tabla->ImprimirResultados(resolver.GetSolucionVoraz());
+
+  // Crear objeto TablaGRASP
+  tabla = new TablaGRASP(fichero_salida, false);
+  // Imprimir cabecera
+  tabla->ImprimirCabecera();
+  // Imprimir resultados
+  tabla->ImprimirResultados(resolver.GetSolucionGRASP());
 
 }
 
@@ -79,20 +87,25 @@ void EjecutarInstancia(const std::string& fichero_entrada, std::string fichero_s
     }
     std::cout << "]" << std::endl;
   }
+  std::cout << "Z: " << s->GetZ() << std::endl;
+  std::cout << "----------------------------------------" << std::endl;
+
+  // GRASP
+  resolver.ResolverGRASP(3, 100);
+  SolucionMDP* s_grasp = resolver.GetSolucionGRASP();
+  std::cout << "Conjunto S GRASP: " << std::endl;
+  for (const auto& elem : s_grasp->GetS()) {
+    std::cout << "[ ";
+    for (const auto& val : elem) {
+      std::cout << val << " ";
+    }
+    std::cout << "]" << std::endl;
+  }
+  std::cout << "Z: " << s_grasp->GetZ() << std::endl;
   std::cout << "----------------------------------------" << std::endl;
 
   ImprimirTablas(resolver, fichero_salida);
 
-
-
-  // Crear objeto AlgoritmoVoraz
-  /* AlgoritmoVoraz algoritmo_voraz(datos);
-  // Ejecutar el algoritmo voraz
-  algoritmo_voraz.Ejecutar();
-  // Crear objeto AlgoritmoGRASP
-  AlgoritmoGRASP algoritmo_grasp(datos);
-  // Ejecutar el algoritmo GRASP
-  algoritmo_grasp.Ejecutar(); */
 }
 
 // Lee los ficheros de entrada y ejecuta los algoritmos
