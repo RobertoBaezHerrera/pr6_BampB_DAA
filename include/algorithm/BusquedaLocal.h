@@ -18,5 +18,8 @@
 class BusquedaLocal : public AlgoritmoVoraz {
  public:
   BusquedaLocal(const DatosMDP& datos);
+  std::vector<std::vector<double>> CalcularElementosFueraDeS(const std::vector<std::vector<double>>& S);
   std::vector<std::vector<double>> BLSwap(const std::vector<std::vector<double>>& S);
+  std::vector<std::vector<double>> BLSwapIterativoFirstImprovement(const std::vector<std::vector<double>>& S);
+    std::vector<std::vector<double>> BLSwapIterativoBestImprovement(const std::vector<std::vector<double>>& S);
 };
