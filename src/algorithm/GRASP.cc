@@ -65,7 +65,9 @@ std::vector<std::vector<double>> AlgoritmoGRASP::EjecutarGRASP(int LRC, int iter
   int limite_iteraciones = 0;
   while (limite_iteraciones < iteraciones) {
     S = EjecutarVorazAleatorio(LRC);
-    // Busqueda local pendiente
+    // Aplicar busqueda local
+    BusquedaLocal busqueda_local(datos_);
+    S = busqueda_local.BLSwap(S);
     z = CalcularZ(S);
     if (z > z_mejor) {
       z_mejor = z;

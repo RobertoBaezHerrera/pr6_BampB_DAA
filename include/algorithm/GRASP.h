@@ -18,6 +18,7 @@
 
 #include "../algorithm/Voraz.h"
 #include "../model/DatosMDP.h"
+#include "../algorithm/BusquedaLocal.h"
 
 class AlgoritmoGRASP : public AlgoritmoVoraz {
  public:

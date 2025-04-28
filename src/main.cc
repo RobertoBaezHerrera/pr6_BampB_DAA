@@ -91,7 +91,7 @@ void EjecutarInstancia(const std::string& fichero_entrada, std::string fichero_s
   std::cout << "----------------------------------------" << std::endl;
 
   // GRASP
-  resolver.ResolverGRASP(3, 100);
+  resolver.ResolverGRASP(1, 1);
   SolucionMDP* s_grasp = resolver.GetSolucionGRASP();
   std::cout << "Conjunto S GRASP: " << std::endl;
   for (const auto& elem : s_grasp->GetS()) {
