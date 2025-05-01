@@ -14,11 +14,13 @@
 #include <string>
 #include <vector>
 
+#include "../model/DatosMDP.h"
+
 class SolucionMDP {
  public:
   SolucionMDP() = default;
   SolucionMDP(const std::vector<std::vector<double>>& S, double z, double cpu,
-              const std::string& fichero_entrada, int n, int k, int m);
+              const std::string& fichero_entrada, int n, int k, int m, DatosMDP datos);
   
   // Getters
   std::vector<std::vector<double>> GetS() const;
@@ -28,6 +30,7 @@ class SolucionMDP {
   int GetN() const;
   int GetK() const;
   int GetM() const;
+  DatosMDP GetDatos() const;
 
  protected:
   std::vector<std::vector<double>> S_;
@@ -37,21 +40,22 @@ class SolucionMDP {
   int n_;
   int k_;
   int m_;
+  DatosMDP datos_;
 };
 
 class SolucionVoraz : public SolucionMDP {
  public:
   SolucionVoraz() = default;
   SolucionVoraz(const std::vector<std::vector<double>>& S, double z, double cpu,
-                const std::string& fichero_entrada, int n, int k, int m) 
-                : SolucionMDP(S, z, cpu, fichero_entrada, n, m, k) { }
+                const std::string& fichero_entrada, int n, int k, int m, DatosMDP datos) 
+                : SolucionMDP(S, z, cpu, fichero_entrada, n, m, k, datos) { }
 };
 
 class SolucionGRASP : public SolucionMDP {
  public:
   SolucionGRASP() = default;
   SolucionGRASP(const std::vector<std::vector<double>>& S, double z, double cpu,
-                const std::string& fichero_entrada, int n, int k, int m, int iteraciones, int LRC);
+                const std::string& fichero_entrada, int n, int k, int m, DatosMDP datos, int iteraciones, int LRC);
 
   // Getters
   int GetIteraciones() const { return iteraciones_; }

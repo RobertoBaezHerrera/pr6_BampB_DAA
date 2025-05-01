@@ -23,6 +23,8 @@ class ResolverMDP {
 
   // Método para resolver el problema MDP
   void ResolverVoraz();
+  // Método para resolver el problema MDP con Voraz y Busqueda Local
+  void ResolverVorazConBusquedaLocal();
   // Método para resolver el problema MDP con GRASP
   void ResolverGRASP(int LRC, int iteraciones = 10);
 

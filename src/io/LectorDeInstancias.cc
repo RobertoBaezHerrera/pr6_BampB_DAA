@@ -40,22 +40,25 @@ void LectorDeInstancias::LeerNombresFicherosEntrada() {
 
     // Ordenar por orden natural (numérico) basado en el nuevo formato
     std::sort(ficheros_entrada_.begin(), ficheros_entrada_.end(), [](const std::string& a, const std::string& b) {
-        // Extraer el número de la instancia basado en el nuevo formato
-        auto get_number = [](const std::string& filename) -> int {
-            size_t pos = filename.find("max_div_");
-            if (pos == std::string::npos) {
-                // Si no se encuentra "max_div_", devolver un número alto para que quede al final
-                return std::numeric_limits<int>::max();
-            }
-            pos += 8; // Avanzar 8 caracteres después de "max_div_"
-            size_t end = filename.find('_', pos); // Buscar el siguiente guion bajo '_'
-            if (end == std::string::npos) {
-                // Si no se encuentra el guion bajo, devolver un número alto
-                return std::numeric_limits<int>::max();
-            }
-            return std::stoi(filename.substr(pos, end - pos));
+        auto extraer_numeros = [](const std::string& nombre) -> std::pair<int, int> {
+            size_t pos = nombre.find("max_div_");
+            if (pos == std::string::npos) return {std::numeric_limits<int>::max(), std::numeric_limits<int>::max()};
+    
+            pos += 8;  // Después de "max_div_"
+            size_t guion1 = nombre.find('_', pos);
+            if (guion1 == std::string::npos) return {std::numeric_limits<int>::max(), std::numeric_limits<int>::max()};
+    
+            int n = std::stoi(nombre.substr(pos, guion1 - pos));
+    
+            size_t pos2 = guion1 + 1;
+            size_t punto = nombre.find('.', pos2); // Hasta antes de .txt
+            if (punto == std::string::npos) punto = nombre.length();
+            int k = std::stoi(nombre.substr(pos2, punto - pos2));
+    
+            return {n, k};
         };
-
-        return get_number(a) < get_number(b);
+    
+        return extraer_numeros(a) < extraer_numeros(b);
     });
+    
 }

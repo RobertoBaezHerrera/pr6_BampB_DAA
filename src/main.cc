@@ -68,13 +68,17 @@ void ImprimirTablas(ResolverMDP resolver, std::string fichero_salida) {
   tabla->ImprimirResultados(resolver.GetSolucionGRASP());
 }
 
-void EjecutarVoraz(const std::string& fichero_entrada, Tabla* tabla) {
+void EjecutarVoraz(const std::string& fichero_entrada, Tabla* tabla, bool busqueda_local = false) {
   for (int m = 2; m <= 5; ++m) {
     // Crear objeto DatosMDP
     DatosMDP datos(fichero_entrada);
     datos.SetM(m);
     ResolverMDP resolver(datos);
-    resolver.ResolverVoraz();
+    if (busqueda_local) {
+      resolver.ResolverVorazConBusquedaLocal();
+    } else {
+      resolver.ResolverVoraz();
+    }
     tabla->ImprimirResultados(resolver.GetSolucionVoraz());
   }
   tabla->ImprimirLineaSeparadora();
@@ -116,20 +120,26 @@ void LeerFicheros(int argc, char* argv[], int opcion) {
   LectorDeInstancias gestor{ruta_directorio, fichero_salida};
   gestor.LeerNombresFicherosEntrada();
   int num_ficheros = gestor.GetFicherosEntrada().size();
-  Tabla* tabla = new TablaVoraz(fichero_salida);
-  if (opcion == 2) {
+  Tabla* tabla = nullptr;
+  if (opcion == 1 || opcion == 2) {
+    tabla = new TablaVoraz(fichero_salida);
+  } else if (opcion == 3) {
     tabla = new TablaGRASP(fichero_salida);
   }
+  bool busqueda_local;
+  // Si la opción es 2, se activa la búsqueda local para el algoritmo Voraz
+  opcion == 2 ? busqueda_local = true : busqueda_local = false;
   tabla->ImprimirCabecera();
   for (auto& fichero_entrada : gestor.GetFicherosEntrada()) {
     std::cout << "\033[1;33mEjecutando el fichero: " << fichero_entrada << "\033[0m" << std::endl;
-    if (opcion == 1) {
-      EjecutarVoraz(fichero_entrada, tabla);
-    } else if (opcion == 2) {
+    if (opcion == 1 || opcion == 2) {
+      EjecutarVoraz(fichero_entrada, tabla, busqueda_local);
+    } else if (opcion == 3) {
       EjecutarGRASP(fichero_entrada, tabla);
     }
   }
   std::cout << "Numero de ficheros definidos: " << num_ficheros << std::endl;
+  delete tabla;
   return;
 }
 
@@ -137,7 +147,8 @@ int MenuOpciones() {
   int opcion = 0;
   std::cout << "Seleccione una opción: " << std::endl;
   std::cout << "1. Resolver mediante VORAZ" << std::endl;
-  std::cout << "2. Resolver mediante GRASP" << std::endl;
+  std::cout << "2. Resolver mediante VORAZ y Busqueda Local" << std::endl;
+  std::cout << "3. Resolver mediante GRASP" << std::endl;
   std::cout << "0. Salir" << std::endl;
   std::cin >> opcion;
   return opcion;
@@ -149,6 +160,7 @@ void EjecutarPrograma(int opcion, int argc, char* argv[]) {
       std::cout << "Saliendo del programa...." << std::endl;
     case 1:
     case 2:
+    case 3:
       LeerFicheros(argc, argv, opcion);
       break;
     default:

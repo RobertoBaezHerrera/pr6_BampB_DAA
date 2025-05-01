@@ -1,8 +1,8 @@
 #include "../include/results/SolucionMDP.h"
 
 SolucionMDP::SolucionMDP(const std::vector<std::vector<double>>& S, double z, double cpu,
-               const std::string& fichero_entrada, int n, int k, int m)
-    : S_(S), z_(z), cpu_(cpu), fichero_entrada_(fichero_entrada), n_(n), k_(k), m_(m) {
+               const std::string& fichero_entrada, int n, int k, int m, DatosMDP datos)
+    : S_(S), z_(z), cpu_(cpu), fichero_entrada_(fichero_entrada), n_(n), k_(k), m_(m), datos_(datos) {
   // Constructor
 }
 
@@ -21,8 +21,10 @@ int SolucionMDP::GetK() const { return k_; }
 
 int SolucionMDP::GetM() const { return m_; }
 
+DatosMDP SolucionMDP::GetDatos() const { return datos_; }
+
 SolucionGRASP::SolucionGRASP(const std::vector<std::vector<double>>& S, double z, double cpu,
-               const std::string& fichero_entrada, int n, int k, int m, int iteraciones, int LRC)
-    : SolucionMDP(S, z, cpu, fichero_entrada, n, k, m), iteraciones_(iteraciones), LRC_(LRC) {
+               const std::string& fichero_entrada, int n, int k, int m, DatosMDP datos, int iteraciones, int LRC)
+    : SolucionMDP(S, z, cpu, fichero_entrada, n, k, m, datos), iteraciones_(iteraciones), LRC_(LRC) {
   // Constructor
 }

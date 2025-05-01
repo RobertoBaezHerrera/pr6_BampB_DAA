@@ -15,8 +15,11 @@
 #include <fstream>
 #include <iomanip>
 #include <vector>
+#include <algorithm>
+#include <utility>
 
 #include "../results/SolucionMDP.h"
+#include "../model/DatosMDP.h"
 
 class Tabla {
  public:

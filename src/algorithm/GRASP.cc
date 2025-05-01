@@ -23,8 +23,7 @@ std::vector<int> AlgoritmoGRASP::CalcularElementosMasAlejados(const std::vector<
   }
 
   // Ordenar de mayor a menor distancia
-  std::sort(distancias_indices.begin(), distancias_indices.end(),
-            std::greater<>());
+  std::sort(distancias_indices.begin(), distancias_indices.end(), std::greater<>());
 
   // Coger los LRC primeros índices
   std::vector<int> indices;
@@ -67,7 +66,7 @@ std::vector<std::vector<double>> AlgoritmoGRASP::EjecutarGRASP(int LRC, int iter
     S = EjecutarVorazAleatorio(LRC);
     // Aplicar busqueda local
     BusquedaLocal busqueda_local(datos_);
-    S = busqueda_local.BLSwap(S);
+    S = busqueda_local.BLSwapIterativoBestImprovement(S);
     z = CalcularZ(S);
     if (z > z_mejor) {
       z_mejor = z;
