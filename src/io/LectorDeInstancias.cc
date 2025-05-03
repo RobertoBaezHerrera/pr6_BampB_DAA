@@ -38,27 +38,26 @@ void LectorDeInstancias::LeerNombresFicherosEntrada() {
         closedir(directorio);
     }
 
-    // Ordenar por orden natural (numérico) basado en el nuevo formato
     std::sort(ficheros_entrada_.begin(), ficheros_entrada_.end(), [](const std::string& a, const std::string& b) {
-        auto extraer_numeros = [](const std::string& nombre) -> std::pair<int, int> {
+        auto extraer_nk = [](const std::string& nombre) -> std::pair<int, int> {
             size_t pos = nombre.find("max_div_");
             if (pos == std::string::npos) return {std::numeric_limits<int>::max(), std::numeric_limits<int>::max()};
     
-            pos += 8;  // Después de "max_div_"
+            pos += 8;
             size_t guion1 = nombre.find('_', pos);
             if (guion1 == std::string::npos) return {std::numeric_limits<int>::max(), std::numeric_limits<int>::max()};
-    
             int n = std::stoi(nombre.substr(pos, guion1 - pos));
     
             size_t pos2 = guion1 + 1;
-            size_t punto = nombre.find('.', pos2); // Hasta antes de .txt
+            size_t punto = nombre.find('.', pos2); // hasta antes de ".txt"
             if (punto == std::string::npos) punto = nombre.length();
             int k = std::stoi(nombre.substr(pos2, punto - pos2));
     
-            return {n, k};
+            return {k, n}; // <- CAMBIADO: primero k, luego n
         };
     
-        return extraer_numeros(a) < extraer_numeros(b);
+        return extraer_nk(a) < extraer_nk(b);
     });
+    
     
 }
