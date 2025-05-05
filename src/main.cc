@@ -125,10 +125,14 @@ void EjecutarRamificacionYPodaVoraz(const std::string& fichero_entrada, Tabla* t
     resolver.ResolverVoraz();
     double resultado = resolver.GetSolucionVoraz()->GetZ();
     RamificacionYPoda ramificacion(datos);
+    // Medir tiempo de CPU
+    double inicio = clock();
     std::vector<std::vector<double>> S = ramificacion.Ejecutar(resultado);
+    double fin = clock();
+    double cpu = (fin - inicio) / CLOCKS_PER_SEC;
     if (S.empty()) S = resolver.GetSolucionVoraz()->GetS();
     double z = datos.CalcularZ(S);
-    SolucionMDP* s = new SolucionRamificacionYPoda(S, z, 0.0, datos.GetFicheroEntrada(), datos.GetNumElementosN(),
+    SolucionMDP* s = new SolucionRamificacionYPoda(S, z, cpu, datos.GetFicheroEntrada(), datos.GetNumElementosN(),
         datos.GetDimensionK(), datos.GetM(), datos, ramificacion.GetNodosGenerados());
     tabla->ImprimirResultados(s);
     //resolver.LiberarMemoria();
@@ -149,10 +153,14 @@ void EjecutarRamificacionYPodaGRASP(const std::string& fichero_entrada, Tabla* t
         resolver.ResolverGRASP(LRC, iteraciones * iter);
         double resultado = resolver.GetSolucionGRASP()->GetZ();
         RamificacionYPoda ramificacion(datos);
+        // Medir tiempo de CPU
+        double inicio = clock();
         std::vector<std::vector<double>> S = ramificacion.Ejecutar(resultado);
+        double fin = clock();
+        double cpu = (fin - inicio) / CLOCKS_PER_SEC;
         if (S.empty()) S = resolver.GetSolucionGRASP()->GetS();
         double z = datos.CalcularZ(S);
-        SolucionMDP* s = new SolucionRamificacionYPoda(S, z, 0.0, datos.GetFicheroEntrada(), datos.GetNumElementosN(),
+        SolucionMDP* s = new SolucionRamificacionYPoda(S, z, cpu, datos.GetFicheroEntrada(), datos.GetNumElementosN(),
             datos.GetDimensionK(), datos.GetM(), datos, ramificacion.GetNodosGenerados());
         tabla->ImprimirResultados(s);
 

@@ -31,9 +31,9 @@ void TablaVoraz::ImprimirCabecera() {
     fichero_salida_ << std::setw(10) << "n";
     fichero_salida_ << std::setw(10) << "K";
     fichero_salida_ << std::setw(10) << "m";
-    fichero_salida_ << std::setw(15) << std::fixed << std::setprecision(2) << "z";
+    fichero_salida_ << std::setw(15) << "z";
     fichero_salida_ << std::setw(25) << "S";
-    fichero_salida_ << std::setw(25) << "CPU" << std::endl; 
+    fichero_salida_ << std::setw(25) << "CPU" << std::endl;
     fichero_salida_ << kSeparador << std::endl;
 }
 
@@ -61,9 +61,11 @@ void TablaVoraz::ImprimirResultados(SolucionMDP* s) {
     fichero_salida_ << std::setw(10) << s->GetN();
     fichero_salida_ << std::setw(10) << s->GetK();
     fichero_salida_ << std::setw(10) << s->GetM();
-    fichero_salida_ << std::setw(15) << s->GetZ();
+    fichero_salida_ << std::setw(15) << std::fixed << std::setprecision(2) << s->GetZ();
     fichero_salida_ << std::setw(25) << indices;
-    fichero_salida_ << std::setw(25) << s->GetCPU() << std::endl;
+    fichero_salida_ << std::setw(25) << std::scientific << s->GetCPU() << std::endl;
+    // Reiniciar los manipuladores de flujo a sus valores predeterminados
+    fichero_salida_ << std::resetiosflags(std::ios::fixed | std::ios::scientific);
 }
 
 TablaGRASP::TablaGRASP(const std::string& fichero_salida, bool primera_vez) : Tabla(fichero_salida, primera_vez) { }
@@ -78,9 +80,9 @@ void TablaGRASP::ImprimirCabecera() {
     fichero_salida_ << std::setw(10) << "m";
     fichero_salida_ << std::setw(15) << "Iter";
     fichero_salida_ << std::setw(10) << "|LRC|";
-    fichero_salida_ << std::setw(15) << std::fixed << std::setprecision(2) << "z";
+    fichero_salida_ << std::setw(15) << "z";
     fichero_salida_ << std::setw(25) << "S";
-    fichero_salida_ << std::setw(25) << "CPU" << std::endl; 
+    fichero_salida_ << std::setw(25) << "CPU" << std::endl;
     fichero_salida_ << kSeparador << std::endl;
 }
 
@@ -110,9 +112,11 @@ void TablaGRASP::ImprimirResultados(SolucionMDP* s) {
     fichero_salida_ << std::setw(10) << s->GetM();
     fichero_salida_ << std::setw(15) << static_cast<SolucionGRASP*>(s)->GetIteraciones();
     fichero_salida_ << std::setw(10) << static_cast<SolucionGRASP*>(s)->GetLRC();
-    fichero_salida_ << std::setw(15) << s->GetZ();
+    fichero_salida_ << std::setw(15) << std::fixed << std::setprecision(2) << s->GetZ();
     fichero_salida_ << std::setw(25) << indices;
-    fichero_salida_ << std::setw(25) << s->GetCPU() << std::endl;
+    fichero_salida_ << std::setw(25) << std::scientific << std::setprecision(2) << s->GetCPU() << std::endl;
+    // Reiniciar los manipuladores de flujo a sus valores predeterminados
+    fichero_salida_ << std::resetiosflags(std::ios::fixed | std::ios::scientific);
 }
 
 TablaRamificacionYPoda::TablaRamificacionYPoda(const std::string& fichero_salida, bool primera_vez) : Tabla(fichero_salida, primera_vez) { }
@@ -125,7 +129,7 @@ void TablaRamificacionYPoda::ImprimirCabecera() {
     fichero_salida_ << std::setw(10) << "n";
     fichero_salida_ << std::setw(10) << "K";
     fichero_salida_ << std::setw(10) << "m";
-    fichero_salida_ << std::setw(15) << std::fixed << std::setprecision(2) << "z";
+    fichero_salida_ << std::setw(15) << "z";
     fichero_salida_ << std::setw(25) << "S";
     fichero_salida_ << std::setw(25) << "CPU"; 
     fichero_salida_ << std::setw(10) << "Nodos_generados" << std::endl;
@@ -156,8 +160,10 @@ void TablaRamificacionYPoda::ImprimirResultados(SolucionMDP* s) {
     fichero_salida_ << std::setw(10) << s->GetN();
     fichero_salida_ << std::setw(10) << s->GetK();
     fichero_salida_ << std::setw(10) << s->GetM();
-    fichero_salida_ << std::setw(15) << s->GetZ();
+    fichero_salida_ << std::setw(15) << std::fixed << std::setprecision(2) << s->GetZ();
     fichero_salida_ << std::setw(25) << indices;
-    fichero_salida_ << std::setw(25) << s->GetCPU();
+    fichero_salida_ << std::setw(25) << std::scientific << std::setprecision(2) << s->GetCPU();
     fichero_salida_ << std::setw(10) << static_cast<SolucionRamificacionYPoda*>(s)->GetNodosGenerados() << std::endl;
+    // Reiniciar los manipuladores de flujo a sus valores predeterminados
+    fichero_salida_ << std::resetiosflags(std::ios::fixed | std::ios::scientific);
 }
