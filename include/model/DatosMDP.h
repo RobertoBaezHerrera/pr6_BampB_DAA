@@ -13,6 +13,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cmath>
 
 // Clase DatosMDP que almacena los datos de la instancia
 class DatosMDP {
@@ -26,12 +27,17 @@ class DatosMDP {
   int GetM() const;
   int GetTamanoConjuntoS() const;
   std::string GetFicheroEntrada() const;
+  std::vector<std::vector<double>> GetMatrizDistancia() const;
+  double GetElementoMatrizDistancia(int i, int j) const;
+  double GetDistanciaMaxima() const;
 
   // Setters
   void SetM(int m);
   void VaciarConjuntoS();
 
   void AnadirElementoAConjuntoS(const std::vector<double>& elemento);
+  double CalcularDistancia(const std::vector<double>& Si, const std::vector<double>& centro_gravedad) const;
+  double CalcularZ(const std::vector<std::vector<double>>& solucion) const;
 
  private:
   int num_elementos_n_;
@@ -39,4 +45,6 @@ class DatosMDP {
   std::vector<std::vector<double>> conjunto_S_;
   int m_ = 0;
   std::string fichero_entrada_;
+  std::vector<std::vector<double>> matriz_de_distancias_;
+  double distancia_maxima_ = 0.0;
 };

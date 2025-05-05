@@ -45,3 +45,10 @@ class TablaGRASP : public Tabla {
   void ImprimirCabecera() override;
   void ImprimirResultados(SolucionMDP* s) override;
 };
+
+class TablaRamificacionYPoda : public Tabla {
+ public:
+  TablaRamificacionYPoda(const std::string& fichero_salida, bool primera_vez = true);
+  void ImprimirCabecera() override;
+  void ImprimirResultados(SolucionMDP* s) override;
+};

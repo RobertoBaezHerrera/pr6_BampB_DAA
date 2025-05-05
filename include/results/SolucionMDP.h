@@ -64,3 +64,15 @@ class SolucionGRASP : public SolucionMDP {
   int iteraciones_;
   int LRC_;
 };
+
+class SolucionRamificacionYPoda : public SolucionMDP {
+ public:
+  SolucionRamificacionYPoda() = default;
+  SolucionRamificacionYPoda(const std::vector<std::vector<double>>& S, double z, double cpu,
+                            const std::string& fichero_entrada, int n, int k, int m, DatosMDP datos, int nodos_generados);
+
+  // Getters
+  int GetNodosGenerados() const { return nodos_generados_; }
+ private:
+  int nodos_generados_;
+};

@@ -16,6 +16,7 @@
 #include "../algorithm/Voraz.h"
 #include "../results/SolucionMDP.h"
 #include "../algorithm/GRASP.h"
+#include "../algorithm/RamificacionYPoda.h"
 
 class ResolverMDP {
  public:
@@ -27,13 +28,20 @@ class ResolverMDP {
   void ResolverVorazConBusquedaLocal();
   // Método para resolver el problema MDP con GRASP
   void ResolverGRASP(int LRC, int iteraciones = 10);
+  // Método para resolver el problema MDP con Ramificación y Poda
+  void ResolverRamificacionYPoda(double cota_inferior, int m);
 
   // Getters
   SolucionMDP* GetSolucionVoraz() const { return solucion_voraz_; }
   SolucionMDP* GetSolucionGRASP() const { return solucion_grasp_; }
+  SolucionMDP* GetSolucionRamificacionYPoda() const { return solucion_ramificacion_y_poda_; }
+
+  // Método para liberar la memoria de las soluciones
+  void LiberarMemoria();
 
  private:
   DatosMDP datos_;
   SolucionMDP* solucion_voraz_;
-  SolucionGRASP* solucion_grasp_;
+  SolucionMDP* solucion_grasp_;
+  SolucionMDP* solucion_ramificacion_y_poda_;
 };

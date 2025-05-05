@@ -114,3 +114,50 @@ void TablaGRASP::ImprimirResultados(SolucionMDP* s) {
     fichero_salida_ << std::setw(25) << indices;
     fichero_salida_ << std::setw(25) << s->GetCPU() << std::endl;
 }
+
+TablaRamificacionYPoda::TablaRamificacionYPoda(const std::string& fichero_salida, bool primera_vez) : Tabla(fichero_salida, primera_vez) { }
+
+void TablaRamificacionYPoda::ImprimirCabecera() {
+    fichero_salida_ << std::left;  // Alinear a la izquierda
+    fichero_salida_ << "TABLA DE RESULTADOS DEL ALGORITMO RAMIFICACION Y PODA" << std::endl;
+    fichero_salida_ << kSeparador << std::endl;
+    fichero_salida_ << std::setw(25) << "Problema";
+    fichero_salida_ << std::setw(10) << "n";
+    fichero_salida_ << std::setw(10) << "K";
+    fichero_salida_ << std::setw(10) << "m";
+    fichero_salida_ << std::setw(15) << std::fixed << std::setprecision(2) << "z";
+    fichero_salida_ << std::setw(25) << "S";
+    fichero_salida_ << std::setw(25) << "CPU"; 
+    fichero_salida_ << std::setw(10) << "Nodos_generados" << std::endl;
+    fichero_salida_ << kSeparador << std::endl;
+}
+
+void TablaRamificacionYPoda::ImprimirResultados(SolucionMDP* s) {
+    // Imprimir los resultados en el fichero de salida
+    std::string fichero_entrada = s->GetFicheroEntrada();
+    fichero_entrada = fichero_entrada.substr(fichero_entrada.find_last_of("/") + 1);
+
+    // Calcular los indices de los elementos en el conjunto S
+    std::string indices = "";
+    DatosMDP datos = s->GetDatos();
+    std::vector<std::vector<double>> S_original = datos.GetConjuntoS();
+    std::vector<std::vector<double>> S = s->GetS();
+    for (const auto& elem : S) {
+      auto it = std::find(S_original.begin(), S_original.end(), elem);
+      if (it != S_original.end()) {
+        int index = std::distance(S_original.begin(), it);
+        indices += std::to_string(index) + " ";
+      }
+    }
+
+    // Establecer un ancho fijo para cada columna
+    fichero_salida_ << std::left;  // Alinear a la izquierda
+    fichero_salida_ << std::setw(25) << fichero_entrada;
+    fichero_salida_ << std::setw(10) << s->GetN();
+    fichero_salida_ << std::setw(10) << s->GetK();
+    fichero_salida_ << std::setw(10) << s->GetM();
+    fichero_salida_ << std::setw(15) << s->GetZ();
+    fichero_salida_ << std::setw(25) << indices;
+    fichero_salida_ << std::setw(25) << s->GetCPU();
+    fichero_salida_ << std::setw(10) << static_cast<SolucionRamificacionYPoda*>(s)->GetNodosGenerados() << std::endl;
+}

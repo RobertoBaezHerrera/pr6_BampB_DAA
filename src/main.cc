@@ -24,8 +24,8 @@ bool primera_ejecucion = true;
 // Texto de ayuda
 const std::string kTextoAyuda =
     "Uso: pr6_VRPT <ruta_directorio> <fichero_salida.txt>\n\n"
-    "Encuentra la máxima diversidad entre vecrores de 2 formas diferentes: "
-    "voraz y GRASP.\n"
+    "Encuentra la máxima diversidad entre vecrores de varias formas diferentes: "
+    "utilizando voraz, GRASP y ramificación y poda.\n"
     "Obtiene los vectores de los ficheros de entrada que están el la ruta del "
     "directorio.\n"
     "Además, imprime los resultados en un fichero de salida.\n"
@@ -56,7 +56,7 @@ void Usage(int argc, char* argv[]) {
   }
 }
 
-void ImprimirTablas(ResolverMDP resolver, std::string fichero_salida) {
+/* void ImprimirTablas(ResolverMDP resolver, std::string fichero_salida) {
   // Imprimir TablaVoraz
   Tabla* tabla = new TablaVoraz(fichero_salida, primera_ejecucion);
   tabla->ImprimirCabecera();
@@ -66,7 +66,7 @@ void ImprimirTablas(ResolverMDP resolver, std::string fichero_salida) {
   tabla = new TablaGRASP(fichero_salida, false);
   tabla->ImprimirCabecera();
   tabla->ImprimirResultados(resolver.GetSolucionGRASP());
-}
+} */
 
 void EjecutarVoraz(const std::string& fichero_entrada, Tabla* tabla, bool busqueda_local = false) {
   for (int m = 2; m <= 5; ++m) {
@@ -80,6 +80,7 @@ void EjecutarVoraz(const std::string& fichero_entrada, Tabla* tabla, bool busque
       resolver.ResolverVoraz();
     }
     tabla->ImprimirResultados(resolver.GetSolucionVoraz());
+    //resolver.LiberarMemoria();
   }
   tabla->ImprimirLineaSeparadora();
   /* // Impresion de S por voraz
@@ -107,6 +108,55 @@ void EjecutarGRASP(const std::string& fichero_entrada, Tabla* tabla) {
         int iteraciones = 10;
         resolver.ResolverGRASP(LRC, iteraciones * iter);
         tabla->ImprimirResultados(resolver.GetSolucionGRASP());
+        //resolver.LiberarMemoria();
+      }
+    }
+  }
+  tabla->ImprimirLineaSeparadora();
+}
+
+void EjecutarRamificacionYPodaVoraz(const std::string& fichero_entrada, Tabla* tabla) {
+  std::cout << "Ejecutando Ramificacion y Poda Voraz..." << std::endl;
+  for (int m = 2; m <= 5; ++m) {
+    // Crear objeto DatosMDP
+    DatosMDP datos(fichero_entrada);
+    datos.SetM(m);
+    ResolverMDP resolver(datos);
+    resolver.ResolverVoraz();
+    double resultado = resolver.GetSolucionVoraz()->GetZ();
+    RamificacionYPoda ramificacion(datos);
+    std::vector<std::vector<double>> S = ramificacion.Ejecutar(resultado);
+    if (S.empty()) S = resolver.GetSolucionVoraz()->GetS();
+    double z = datos.CalcularZ(S);
+    SolucionMDP* s = new SolucionRamificacionYPoda(S, z, 0.0, datos.GetFicheroEntrada(), datos.GetNumElementosN(),
+        datos.GetDimensionK(), datos.GetM(), datos, ramificacion.GetNodosGenerados());
+    tabla->ImprimirResultados(s);
+    //resolver.LiberarMemoria();
+  }
+  tabla->ImprimirLineaSeparadora();
+}
+
+void EjecutarRamificacionYPodaGRASP(const std::string& fichero_entrada, Tabla* tabla) {
+  std::cout << "Ejecutando Ramificacion y Poda GRASP..." << std::endl;
+  for (int m = 2; m <= 5; ++m) {
+    for (int iter = 1; iter <= 2; ++iter) {
+      for (int LRC = 2; LRC <= 3; ++LRC) {
+        // Crear objeto DatosMDP
+        DatosMDP datos(fichero_entrada);
+        datos.SetM(m);
+        ResolverMDP resolver(datos);
+        int iteraciones = 10;
+        resolver.ResolverGRASP(LRC, iteraciones * iter);
+        double resultado = resolver.GetSolucionGRASP()->GetZ();
+        RamificacionYPoda ramificacion(datos);
+        std::vector<std::vector<double>> S = ramificacion.Ejecutar(resultado);
+        if (S.empty()) S = resolver.GetSolucionGRASP()->GetS();
+        double z = datos.CalcularZ(S);
+        SolucionMDP* s = new SolucionRamificacionYPoda(S, z, 0.0, datos.GetFicheroEntrada(), datos.GetNumElementosN(),
+            datos.GetDimensionK(), datos.GetM(), datos, ramificacion.GetNodosGenerados());
+        tabla->ImprimirResultados(s);
+
+        //resolver.LiberarMemoria();
       }
     }
   }
@@ -125,6 +175,8 @@ void LeerFicheros(int argc, char* argv[], int opcion) {
     tabla = new TablaVoraz(fichero_salida);
   } else if (opcion == 3) {
     tabla = new TablaGRASP(fichero_salida);
+  } else if (opcion == 4 || opcion == 5) {
+    tabla = new TablaRamificacionYPoda(fichero_salida);
   }
   bool busqueda_local;
   // Si la opción es 2, se activa la búsqueda local para el algoritmo Voraz
@@ -136,7 +188,14 @@ void LeerFicheros(int argc, char* argv[], int opcion) {
       EjecutarVoraz(fichero_entrada, tabla, busqueda_local);
     } else if (opcion == 3) {
       EjecutarGRASP(fichero_entrada, tabla);
+    } else if (opcion == 4) {
+      EjecutarRamificacionYPodaVoraz(fichero_entrada, tabla);
+    } else if (opcion == 5) {
+      EjecutarRamificacionYPodaGRASP(fichero_entrada, tabla);
+    } else {
+      std::cout << "Opción no válida." << std::endl;
     }
+    //break;
   }
   std::cout << "Numero de ficheros definidos: " << num_ficheros << std::endl;
   delete tabla;
@@ -149,6 +208,8 @@ int MenuOpciones() {
   std::cout << "1. Resolver mediante VORAZ" << std::endl;
   std::cout << "2. Resolver mediante VORAZ y Busqueda Local" << std::endl;
   std::cout << "3. Resolver mediante GRASP" << std::endl;
+  std::cout << "4. Resolver mediante Ramificacion y Poda con la cota inferior del Voraz" << std::endl;
+  std::cout << "5. Resolver mediante Ramificacion y Poda con la cota inferior del GRASP" << std::endl;
   std::cout << "0. Salir" << std::endl;
   std::cin >> opcion;
   return opcion;
@@ -161,6 +222,8 @@ void EjecutarPrograma(int opcion, int argc, char* argv[]) {
     case 1:
     case 2:
     case 3:
+    case 4:
+    case 5:
       LeerFicheros(argc, argv, opcion);
       break;
     default:
