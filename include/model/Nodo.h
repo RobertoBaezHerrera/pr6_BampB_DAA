@@ -19,6 +19,8 @@ class Nodo {
  public:
   Nodo(const std::vector<std::vector<double>>& parcial,
        const std::vector<std::vector<double>>& restantes, double c_sup);
+  // Constructor de copia
+  Nodo(const Nodo& nodo) = default;
 
   //Getters
   std::vector<std::vector<double>> GetSolucionParcial() const;

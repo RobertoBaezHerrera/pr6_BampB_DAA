@@ -31,25 +31,31 @@ std::vector<std::vector<double>> RamificacionYPoda::Ejecutar(const double cota_i
 
   // El algoritmo acaba cuando no quedan ramas que explorar o se ha podado todo
   while (!cola.empty()) {
-    Nodo nodo = cola.top();
+    Nodo primer_nodo = cola.top();
     cola.pop();
+    Nodo segundo_nodo = primer_nodo;
+    if (!cola.empty()) {
+      segundo_nodo = cola.top();
+      cola.pop();
+      cola.push(primer_nodo);
+    }
 
     // PODA: si su cota superior es peor que la mejor solución, descartamos
-    if (nodo.GetCotaSuperior() <= cota_inf) continue;
+    if (segundo_nodo.GetCotaSuperior() <= cota_inf) continue;
 
     // Si es solución completa
-    if (nodo.GetSolucionParcial().size() == m_) {
-      double valor = datos_.CalcularZ(nodo.GetSolucionParcial());
+    if (segundo_nodo.GetSolucionParcial().size() == m_) {
+      double valor = datos_.CalcularZ(segundo_nodo.GetSolucionParcial());
       if (valor > cota_inf) {
         // Actualizamos la cota inferior y la mejor solución
         cota_inf = valor;
-        mejor_solucion = nodo.GetSolucionParcial();
+        mejor_solucion = segundo_nodo.GetSolucionParcial();
       }
       continue;
     }
 
     // Expandimos el nodo
-    std::vector<Nodo> hijos = Expandir(nodo);
+    std::vector<Nodo> hijos = Expandir(segundo_nodo);
     for (const Nodo& hijo : hijos) {
       if (hijo.GetCotaSuperior() > cota_inf) {
         cola.push(hijo);
