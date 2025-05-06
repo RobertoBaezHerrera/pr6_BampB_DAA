@@ -10,8 +10,8 @@ std::vector<std::vector<double>> RamificacionYPoda::Ejecutar(const double cota_i
 
   // Inicializamos la cola de prioridad con nodos iniciales (uno por cada
   // elemento posible inicial) Esta cola repreesnta el árbol de búsqueda y se
-  // ordena por la cota superior de cada nodo La cota superior es la mejor
-  // estimación de la solución que podemos obtener a partir de ese nodo
+  // ordena por la cota superior de cada nodo 
+  // La cota superior es la mejor estimación de la solución que podemos obtener a partir de ese nodo
   std::priority_queue<Nodo> cola;
   double cota_inf = cota_inferior;  // Usamos el resultado voraz como cota inferior inicial
   for (const auto& elem : S_original) {
@@ -20,9 +20,6 @@ std::vector<std::vector<double>> RamificacionYPoda::Ejecutar(const double cota_i
     for (const auto& e : S_original) {
       if (e != elem) restantes.push_back(e);
     }
-    // Tenemos una cota inferior, no puede ser nada más baja que eso, y el
-    // objetivo es maximizar esa cota inferior, es decir, buscar una cota
-    // superior
   
     // Al inicio se establece una cota inferior de referencia, y luego vamos
     // calculando cotas superiores, y cuando se encuentra una mejor cota
@@ -103,14 +100,14 @@ double RamificacionYPoda::CalcularCotaSuperior(
 
   // 3) Dispersión actual: suma de pares en 'parcial'
   double dispersion_actual = 0.0;
-  for (int i = 0; i < (int)parcial.size(); ++i) {
-    for (int j = i + 1; j < (int)parcial.size(); ++j) {
+  for (int i = 0; i < parcial.size(); ++i) {
+    for (int j = i + 1; j < parcial.size(); ++j) {
       dispersion_actual += matriz[parcial[i]][parcial[j]];
     }
   }
 
   // 4) Si ya está completo, devolvemos su valor exacto
-  if ((int)parcial.size() == m_) {
+  if (parcial.size() == m_) {
     return dispersion_actual;
   }
 
@@ -128,7 +125,7 @@ double RamificacionYPoda::CalcularCotaSuperior(
   }
   std::sort(aportes_pc.begin(), aportes_pc.end(), std::greater<>());
   double suma_pc = 0.0;
-  for (int k = 0; k < faltan && k < (int)aportes_pc.size(); ++k) {
+  for (int k = 0; k < faltan && k < aportes_pc.size(); ++k) {
     suma_pc += aportes_pc[k];
   }
 
