@@ -21,6 +21,7 @@ double Nodo::GetCotaSuperior() const {
 } */
 
 // Orden inverso para priority_queue (de menor a mayor)
+// Usar como estrategia de ramificación la que expande el nodo con cota superior más pequeña.
 bool Nodo::operator<(const Nodo& other) const {
     return cota_superior > other.cota_superior;
 }

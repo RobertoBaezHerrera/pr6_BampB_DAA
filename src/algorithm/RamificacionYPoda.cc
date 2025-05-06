@@ -135,15 +135,15 @@ double RamificacionYPoda::CalcularCotaSuperior(
   // 6) Contribución candidato-candidato
   //    Necesitamos los pares internos más grandes entre los 'restantes'
   std::vector<double> aportes_cc;
-  for (int i = 0; i < (int)restantes.size(); ++i) {
-    for (int j = i + 1; j < (int)restantes.size(); ++j) {
+  for (int i = 0; i < restantes.size(); ++i) {
+    for (int j = i + 1; j < restantes.size(); ++j) {
       aportes_cc.push_back(matriz[restantes[i]][restantes[j]]);
     }
   }
   std::sort(aportes_cc.begin(), aportes_cc.end(), std::greater<>());
   int pares_necesarios = faltan * (faltan - 1) / 2;
   double suma_cc = 0.0;
-  for (int k = 0; k < pares_necesarios && k < (int)aportes_cc.size(); ++k) {
+  for (int k = 0; k < pares_necesarios && k < aportes_cc.size(); ++k) {
     suma_cc += aportes_cc[k];
   }
 
